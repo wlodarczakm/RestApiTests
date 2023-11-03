@@ -24,8 +24,10 @@ public class RestApiTests {
         given()
                 .baseUri("https://reqres.in/api")
                 .pathParam("userId", 3)
+
                 .when()
                 .get("/users/{userId}")
+
                 .then()
                 .body("data.last_name", equalTo("Wong"));
     }
@@ -40,9 +42,11 @@ public class RestApiTests {
                         .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
                 .baseUri("https://postman-echo.com")
                 .header("myheader", HEADER_VALUE)
+
                 .when()
                 .log().all()
                 .post("/post")
+
                 .then()
                 .log().all()
                 .statusCode(200)
@@ -57,15 +61,16 @@ public class RestApiTests {
                 .config(config().encoderConfig(EncoderConfig.encoderConfig()
                         .appendDefaultContentCharsetToContentTypeIfUndefined(false)))
                 .baseUri("https://postman-echo.com")
+
                 .when()
                 .log().all()
                 .post("/post")
+
                 .then()
                 .log().all()
                 .statusCode(200)
                 .contentType("application/json")
                 .and().header("Content-Type", matchesPattern(".*charset=utf-8.*"));
     }
-
     }
 
