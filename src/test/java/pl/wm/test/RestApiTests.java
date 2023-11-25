@@ -3,13 +3,13 @@ package pl.wm.test;
 
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
+import io.restassured.mapper.ObjectMapper;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -98,6 +98,25 @@ public class RestApiTests {
         System.out.println(numberOfResponseObjects);
 
         Assert.assertEquals(counter, numberOfResponseObjects, "OK");
+    }
+
+    @Test
+    public void validateResponseJsonObjects() {
+        RestAssured.baseURI = "https://fakerestapi.azurewebsites.net/api/v1";
+
+        Response response = given()
+                .get("/Authors")
+                .then()
+                .extract()
+                .response();
+
+        response
+                .then()
+                .body("id", everyItem(notNullValue()))
+                .body("idBook", everyItem(notNullValue()))
+                .body("firstName", everyItem(notNullValue()))
+                .body("lastName", everyItem(notNullValue()));
+        System.out.println(response.asString());
     }
 }
 
